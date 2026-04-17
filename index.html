@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #ffffff;
+    padding: 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid #e0e0e0;
+  }
+  .section {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #1a1a1a;
+  }
+  .section:first-of-type {
+    margin-top: 8px;
+  }
+  .section-eyebrow {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #7F77DD;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .section-desc {
+    font-size: 12px;
+    color: #888;
+    margin-top: -10px;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  /* 도메인 구분 (PART) */
+  .domain {
+    margin-top: 72px;
+    padding: 32px 0 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    border-top: 2px solid #1a1a1a;
+  }
+  .domain:first-of-type { margin-top: 56px; }
+  .domain-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #7F77DD;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+    padding-top: 8px;
+  }
+  .domain-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .domain-desc {
+    font-size: 12px;
+    color: #888;
+    margin-left: auto;
+    padding-top: 14px;
+    line-height: 1.5;
+  }
+  .domain + .section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 0.5px solid #e8e8e8;
+  }
+
+  /* R&R */
+  .rr-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 0.5px solid #f0f0f0;
+  }
+  .rr-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+  }
+  .rr-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-top: 2px;
+  }
+
+  /* 리드타임 */
+  .lt-row {
+    display: grid;
+    grid-template-columns: 210px 74px 1fr;
+    align-items: start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 0.5px solid #f0f0f0;
+  }
+  .lt-label { font-size: 13.5px; font-weight: 600; color: #1a1a1a; line-height: 1.4; }
+  .lt-sub { font-size: 11.5px; color: #888; margin-top: 3px; }
+  .lt-total { font-size: 15px; font-weight: 700; color: #1a1a1a; padding-top: 2px; }
+  .lt-unit { font-size: 11px; color: #aaa; font-weight: 400; }
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 4px;
+  }
+  .bar-wrap { display: flex; flex-direction: column; gap: 6px; padding-top: 2px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #888; }
+  .bar-row span:first-child { width: 106px; flex-shrink: 0; }
+  .bar-bg { flex: 1; height: 7px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-val { width: 36px; text-align: right; flex-shrink: 0; color: #555; font-weight: 500; }
+
+  .b-pink   { background: #FBEAF0; color: #993556; }
+  .b-teal   { background: #E1F5EE; color: #0F6E56; }
+  .b-blue   { background: #E6F1FB; color: #185FA5; }
+  .b-amber  { background: #FAEEDA; color: #854F0B; }
+  .b-purple { background: #EEEDFE; color: #534AB7; }
+  .b-gray   { background: #F1EFE8; color: #5F5E5A; }
+  .b-coral  { background: #FAECE7; color: #993C1D; }
+  .b-green  { background: #EAF3DE; color: #3B6D11; }
+
+  /* 3D 모션 가이드 */
+  .guide-block {
+    padding: 14px 0;
+    border-bottom: 0.5px solid #f0f0f0;
+  }
+  .guide-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  .guide-desc {
+    font-size: 12.5px;
+    color: #555;
+    line-height: 1.65;
+  }
+  .guide-desc .sub {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+    padding-left: 10px;
+  }
+  .divider-dot {
+    color: #bbb;
+    margin: 0 6px;
+  }
+
+  /* 기간표 */
+  .sch-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    align-items: start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 0.5px solid #f0f0f0;
+  }
+  .sch-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+  }
+  .sch-label .sch-sub {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #888;
+    margin-top: 3px;
+  }
+  .sch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sch-line {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12.5px;
+    color: #555;
+  }
+  .sch-key {
+    font-size: 11px;
+    color: #888;
+    width: 54px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .sch-val { color: #1a1a1a; font-weight: 500; }
+  .note {
+    font-size: 11.5px;
+    color: #888;
+    padding: 14px 0 0;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<h1>D2C TEAM — 디자인 / 3D 모션 그래픽</h1>
+
+<!-- R&R -->
+<div class="section">
+  <div class="section-eyebrow">Team</div>
+  <div class="section-title">R&amp;R</div>
+</div>
+
+<div class="rr-row">
+  <div class="rr-name">류선주 · 고병주</div>
+  <div class="rr-tags">
+    <span class="badge b-blue">전 브랜드 PDP</span>
+    <span class="badge b-pink">슬룸 자사 프로모션</span>
+    <span class="badge b-purple">UIUX</span>
+  </div>
+</div>
+
+<div class="rr-row">
+  <div class="rr-name">김다영</div>
+  <div class="rr-tags">
+    <span class="badge b-pink">심플&amp;코코 자사/스스 프로모션</span>
+    <span class="badge b-coral">전 브랜드 PPL 프로모션</span>
+    <span class="badge b-amber">전 브랜드 광고 콘텐츠</span>
+  </div>
+</div>
+
+<div class="rr-row">
+  <div class="rr-name">김세진</div>
+  <div class="rr-tags">
+    <span class="badge b-teal">슬룸 스스 프로모션</span>
+    <span class="badge b-blue">PDP 디벨롭</span>
+    <span class="badge b-gray">전 브랜드 CRM</span>
+    <span class="badge b-amber">전 브랜드 광고 콘텐츠</span>
+    <span class="badge b-purple">UIUX</span>
+  </div>
+</div>
+
+<div class="rr-row" style="border-bottom:none;">
+  <div class="rr-name">문성현</div>
+  <div class="rr-tags">
+    <span class="badge b-green">전 브랜드 제품 모델링/렌더링</span>
+    <span class="badge b-amber">3D &amp; 모션 그래픽</span>
+  </div>
+</div>
+
+<!-- ========== PART 01 · 디자인 ========== -->
+<div class="domain">
+  <div class="domain-num">PART 01</div>
+  <div class="domain-name">디자인</div>
+  <div class="domain-desc">프로모션 · 상세페이지 · 배너</div>
+</div>
+
+<!-- 프로모션 / 상세페이지 -->
+<div class="section">
+  <div class="section-eyebrow">Lead Time</div>
+  <div class="section-title">프로모션 / 상세페이지</div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">자사몰 메인 프로모션</div><span class="badge b-pink">Main</span></div>
+  <div><div class="lt-total">9일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>키비주얼</span><div class="bar-bg"><div class="bar-fill" style="width:22%;background:#D4537E"></div></div><span class="bar-val">2일</span></div>
+    <div class="bar-row"><span>전체 베리에이션</span><div class="bar-bg"><div class="bar-fill" style="width:44%;background:#D4537E;opacity:.6"></div></div><span class="bar-val">4일</span></div>
+    <div class="bar-row"><span>피드백 &amp; 수정</span><div class="bar-bg"><div class="bar-fill" style="width:33%;background:#D4537E;opacity:.3"></div></div><span class="bar-val">3일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">자사몰 서브 프로모션</div><span class="badge b-teal">Sub</span></div>
+  <div><div class="lt-total">6일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>키비주얼</span><div class="bar-bg"><div class="bar-fill" style="width:25%;background:#1D9E75"></div></div><span class="bar-val">1.5일</span></div>
+    <div class="bar-row"><span>전체 베리에이션</span><div class="bar-bg"><div class="bar-fill" style="width:42%;background:#1D9E75;opacity:.6"></div></div><span class="bar-val">2.5일</span></div>
+    <div class="bar-row"><span>피드백 &amp; 수정</span><div class="bar-bg"><div class="bar-fill" style="width:33%;background:#1D9E75;opacity:.3"></div></div><span class="bar-val">2일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">신제품 상세페이지</div><div class="lt-sub">영상/3D 별도 3-4주</div><span class="badge b-blue">New</span></div>
+  <div><div class="lt-total">2.5주 <span class="lt-unit">(디자인)</span></div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>초안</span><div class="bar-bg"><div class="bar-fill" style="width:40%;background:#378ADD"></div></div><span class="bar-val">8일</span></div>
+    <div class="bar-row"><span>영상/3D/렌더링</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#378ADD;opacity:.45"></div></div><span class="bar-val">3-4주</span></div>
+    <div class="bar-row"><span>이미지 수급 후 마감</span><div class="bar-bg"><div class="bar-fill" style="width:25%;background:#378ADD;opacity:.6"></div></div><span class="bar-val">5일</span></div>
+    <div class="bar-row"><span>피드백 반영 &amp; 수정</span><div class="bar-bg"><div class="bar-fill" style="width:15%;background:#378ADD;opacity:.3"></div></div><span class="bar-val">3일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">디벨롭 상세페이지</div><div class="lt-sub">전체 플로우 변경</div><span class="badge b-amber">Dev · Full</span></div>
+  <div><div class="lt-total">9일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>초안</span><div class="bar-bg"><div class="bar-fill" style="width:44%;background:#BA7517"></div></div><span class="bar-val">4일</span></div>
+    <div class="bar-row"><span>영상</span><div class="bar-bg"><div class="bar-fill" style="width:56%;background:#BA7517;opacity:.6"></div></div><span class="bar-val">5일</span></div>
+    <div class="bar-row"><span>피드백 반영 &amp; 수정</span><div class="bar-bg"><div class="bar-fill" style="width:56%;background:#BA7517;opacity:.3"></div></div><span class="bar-val">5일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">디벨롭 상세페이지</div><div class="lt-sub">상단 추가·변경 / 섹션 6-7개 미만</div><span class="badge b-purple">Dev · Part</span></div>
+  <div><div class="lt-total">6일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>초안</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#7F77DD"></div></div><span class="bar-val">3일</span></div>
+    <div class="bar-row"><span>영상</span><div class="bar-bg"><div class="bar-fill" style="width:67%;background:#7F77DD;opacity:.6"></div></div><span class="bar-val">4일</span></div>
+    <div class="bar-row"><span>피드백 &amp; 수정</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#7F77DD;opacity:.3"></div></div><span class="bar-val">3일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">CRM</div><span class="badge b-gray">CRM</span></div>
+  <div><div class="lt-total">1.5일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>시안</span><div class="bar-bg"><div class="bar-fill" style="width:67%;background:#888780"></div></div><span class="bar-val">1일</span></div>
+    <div class="bar-row"><span>피드백 &amp; 수정</span><div class="bar-bg"><div class="bar-fill" style="width:33%;background:#888780;opacity:.45"></div></div><span class="bar-val">0.5일</span></div>
+  </div>
+</div>
+
+<!-- 배너 -->
+<div class="section">
+  <div class="section-eyebrow">Lead Time</div>
+  <div class="section-title">배너 제작</div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">메인 롤링 배너</div><span class="badge b-coral">Banner · Main</span></div>
+  <div><div class="lt-total">3일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>초안</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#D85A30"></div></div><span class="bar-val">1.5일</span></div>
+    <div class="bar-row"><span>수정 &amp; 피드백</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#D85A30;opacity:.35"></div></div><span class="bar-val">1.5일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">상세배너</div><span class="badge b-green">Banner · Detail</span></div>
+  <div><div class="lt-total">3일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>초안</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#639922"></div></div><span class="bar-val">1.5일</span></div>
+    <div class="bar-row"><span>수정 &amp; 피드백</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#639922;opacity:.35"></div></div><span class="bar-val">1.5일</span></div>
+  </div>
+</div>
+
+<div class="lt-row">
+  <div><div class="lt-label">서브배너</div><span class="badge b-gray">Banner · Sub</span></div>
+  <div><div class="lt-total">2일</div></div>
+  <div class="bar-wrap">
+    <div class="bar-row"><span>초안</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#888780"></div></div><span class="bar-val">1일</span></div>
+    <div class="bar-row"><span>수정 &amp; 피드백</span><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#888780;opacity:.35"></div></div><span class="bar-val">1일</span></div>
+  </div>
+</div>
+
+<!-- ========== PART 02 · 3D 모션 그래픽 ========== -->
+<div class="domain">
+  <div class="domain-num">PART 02</div>
+  <div class="domain-name">3D &amp; 모션 그래픽</div>
+  <div class="domain-desc">작업 기준 · 요청 / 마감 스케줄</div>
+</div>
+
+<!-- 3D 모션 그래픽 가이드 -->
+<div class="section">
+  <div class="section-eyebrow">Guideline</div>
+  <div class="section-title">작업 기준</div>
+</div>
+
+<div class="guide-block">
+  <div class="guide-title">요청 가능 범위</div>
+  <div class="guide-desc">
+    3D 또는 그래픽이 얹어지는 건에 한해 작업 요청을 받습니다.
+  </div>
+</div>
+
+<div class="guide-block">
+  <div class="guide-title">웹디자인팀 내재화 범위</div>
+  <div class="guide-desc">
+    단순 모션 / 컷 편집은 웹디자인팀에서 진행합니다.
+    <span class="sub">· 그래픽 없이 단순 모션 작업</span>
+    <span class="sub">· 컷 편집 (컷 전환 + 텍스트 등장 위주의 GIF 등)</span>
+  </div>
+</div>
+
+<div class="guide-block" style="border-bottom:none;">
+  <div class="guide-title">시안 요청 지양</div>
+  <div class="guide-desc">
+    단순 모션의 여러 시안 요청(속도·위치 세밀 조정 등)은 지양합니다.
+    퀄리티 향상과 비용 절감에 에너지를 집중할 수 있도록, 단순 영상 시안을 여러 개 뽑고 피드백을 주고받는 방식은 지양합니다.
+  </div>
+</div>
+
+<!-- 요청 / 마감 기간 -->
+<div class="section">
+  <div class="section-eyebrow">Schedule</div>
+  <div class="section-title">요청 / 마감 기간</div>
+</div>
+
+<div class="sch-row">
+  <div class="sch-label">
+    상세 3D 모션 &amp; 이미지컷
+    <span class="sch-sub">5건 이상</span>
+  </div>
+  <div class="sch-info">
+    <div class="sch-line"><span class="sch-key">요청일</span><span class="sch-val">마감일 4주 전 · 모델링/시뮬레이션 필요 시 5–6주</span></div>
+    <div class="sch-line"><span class="sch-key">마감일</span><span class="sch-val">런칭일 4–5일 전</span></div>
+  </div>
+</div>
+
+<div class="sch-row">
+  <div class="sch-label">
+    상세 2D 모션 그래픽
+    <span class="sch-sub">5건 이상</span>
+  </div>
+  <div class="sch-info">
+    <div class="sch-line"><span class="sch-key">요청일</span><span class="sch-val">마감일 2–3주 전</span></div>
+    <div class="sch-line"><span class="sch-key">마감일</span><span class="sch-val">런칭일 4–5일 전</span></div>
+  </div>
+</div>
+
+<div class="sch-row" style="border-bottom:none;">
+  <div class="sch-label">
+    배너 모션 그래픽
+  </div>
+  <div class="sch-info">
+    <div class="sch-line"><span class="sch-key">요청일</span><span class="sch-val">마감일 1주 전</span></div>
+    <div class="sch-line"><span class="sch-key">마감일</span><span class="sch-val">런칭일 2–3일 전</span></div>
+  </div>
+</div>
+
+<div class="note">
+  ※ 모든 기간은 영업일 기준이며, 작업 기간은 1차 기준이기에 변동될 수 있습니다.
+</div>
+
+</body>
+</html>
